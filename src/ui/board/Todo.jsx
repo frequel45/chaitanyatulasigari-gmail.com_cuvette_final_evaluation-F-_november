@@ -128,6 +128,8 @@ export default function Todo() {
       setTitle("");
       setErrors({ titleError: "", priorityError: "", checkListError: "" });
     }
+    setShowDatePicker(false);
+    setHasUserClickedOnDateBtn(false);
   }, [showTodo, showEditTaskBox, tempSingleTaskData]);
 
   const dispatch = useDispatch();
