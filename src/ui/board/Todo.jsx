@@ -37,6 +37,7 @@ export default function Todo() {
     useContext(TempSingleTask);
   const { showEditTaskBox, setShowEditTaskBox } = useContext(EditTaskContext);
   const handleGlobalToggle = () => {
+    
     setGlobalToggle(!globalToggle);
   };
 
@@ -109,7 +110,6 @@ export default function Todo() {
 
   useEffect(() => {
     if (tempSingleTaskData) {
-      // If tempSingleTaskData exists, populate the form fields with its data
       setTitle(tempSingleTaskData.title);
       setChecklistItems(tempSingleTaskData.checklist);
       setSelectedPriority(tempSingleTaskData.priority);
@@ -121,7 +121,6 @@ export default function Todo() {
       );
       setHasUserClickedOnDateBtn(!!tempSingleTaskData.dueDate);
     } else {
-      // Otherwise, reset the form fields
       setChecklistItems([]);
       setShowAssignPeople(false);
       setSelectedPriority(null);
@@ -244,17 +243,9 @@ export default function Todo() {
     setErrors((prevErrors) => ({ ...prevErrors, titleError: titleError }));
   };
 
-  useEffect(() => {
-    // Function to scroll to the bottom of the checklist container
-    const scrollToBottom = () => {
-      if (checklistContainerRef.current) {
-        checklistContainerRef.current.scrollTop =
-          checklistContainerRef.current.scrollHeight;
-      }
-    };
+  const handleAddTodayButtonClick = ()=>{}
 
-    scrollToBottom(); // Call the scroll function initially and whenever checklistItems change
-  }, [checklistItems]);
+  const handleClearTodayButtonClick = ()=>{}
 
   return (
     <>
@@ -266,12 +257,12 @@ export default function Todo() {
               setShowTodo(!showTodo);
             }}
           />
-          <VscCollapseAll onClick={handleGlobalToggle} />
+          <VscCollapseAll onClick={handleGlobalToggle}  />
         </p>
       </div>
       {tasks &&
         tasks?.todo.map((task, index) => (
-          <TodoCard key={index} globalToggle={globalToggle} task={task} />
+          <TodoCard key={index} globalToggle={globalToggle} task={task} setGlobalToggle={setGlobalToggle}/>
         ))}
       {(showTodo || showEditTaskBox) && (
         <div
@@ -452,12 +443,19 @@ export default function Todo() {
                     : "Select Due Date"}
                 </button>
                 {showDatePicker && (
+                  <>
                   <DatePicker
                     selected={startDate}
                     onChange={handleDateChange}
                     className="date-picker"
                     inline
                   />
+                  <div className="calendar-buttons-today-clear">
+                  <button onClick={handleAddTodayButtonClick} >Today</button>
+                  <button onClick={handleClearTodayButtonClick}>Clear</button>
+                  </div>
+                  
+                  </>
                 )}
                 <div className="save-cancel-buttons">
                   <button

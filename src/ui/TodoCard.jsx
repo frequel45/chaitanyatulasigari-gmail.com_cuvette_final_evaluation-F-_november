@@ -20,7 +20,7 @@ import { isDueDateMissed } from "../utils/taskUtils";
 import { EditTaskContext } from "../context/EditProfileContext";
 import { TempSingleTask } from "../context/TempSingleTask";
 
-export default function TodoCard({ globalToggle, task }) {
+export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [showCheckListToggle, setShowCheckListToggle] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
@@ -34,7 +34,7 @@ export default function TodoCard({ globalToggle, task }) {
   const { showEditTaskBox, setShowEditTaskBox } = useContext(EditTaskContext);
   // console.log(task);
   useEffect(() => {
-    setOptionsToggle(false)
+    setOptionsToggle(false);
     const initialCheckedItems = {};
     let initialCount = 0;
     task?.checklist?.forEach((item) => {
@@ -43,27 +43,43 @@ export default function TodoCard({ globalToggle, task }) {
         initialCount++;
       }
     });
-   
+
     setCheckedItems(initialCheckedItems);
     setCheckedCount(initialCount);
   }, [task]);
 
-  // First useEffect for setting optionsToggle
   useEffect(() => {
-    setOptionsToggle(false);
-  }, [globalToggle, task]);
-
-  // Second useEffect for handling the rest of the logic
-  useEffect(() => {
+    console.log(globalToggle);
     if (globalToggle) {
       localStorage.removeItem("expandedCheckList");
       setShowCheckListToggle(false);
     } else {
-      const expandedCheckList = JSON.parse(localStorage.getItem("expandedCheckList")) || [];
+      const expandedCheckList =
+        JSON.parse(localStorage.getItem("expandedCheckList")) || [];
       setShowCheckListToggle(expandedCheckList.includes(task._id));
     }
   }, [globalToggle, task]);
+  const handleToggleChecklist = () => {
+    setOptionsToggle(false);
+    setShowCheckListToggle(!showCheckListToggle);
 
+    const expandedCheckList = new Set(
+      JSON.parse(localStorage.getItem("expandedCheckList")) || []
+    );
+
+    if (showCheckListToggle) {
+      expandedCheckList.delete(task._id);
+      
+    } else {
+      expandedCheckList.add(task._id);
+      setGlobalToggle(false)
+    }
+
+    localStorage.setItem(
+      "expandedCheckList",
+      JSON.stringify(Array.from(expandedCheckList))
+    );
+  };
 
   const setToastText = useContext(ToastContext);
 
@@ -81,14 +97,11 @@ export default function TodoCard({ globalToggle, task }) {
   const accessToken = useSelector((state) => state.accessToken.accessToken);
 
   const handleChangeTaskPhase = async (phase) => {
-    setOptionsToggle(false)
+    setOptionsToggle(false);
     const taskToUpdateWithPhase = {
       state: phase,
       taskId: task._id,
     };
-
-    console.log(task?._id);
-
     const response = await updateTaskPhase(taskToUpdateWithPhase, accessToken);
 
     const { success, msg } = response;
@@ -101,7 +114,7 @@ export default function TodoCard({ globalToggle, task }) {
   };
 
   const handleCheckboxChange = async (itemId) => {
-    setOptionsToggle(false)
+    setOptionsToggle(false);
     const updatedCheckedItems = {
       ...checkedItems,
       [itemId]: !checkedItems[itemId],
@@ -133,28 +146,8 @@ export default function TodoCard({ globalToggle, task }) {
     displayToast(msg, success);
   };
 
-  const handleToggleChecklist = () => {
-    setOptionsToggle(false)
-    setShowCheckListToggle(!showCheckListToggle);
-
-    const expandedCheckList = new Set(
-      JSON.parse(localStorage.getItem("expandedCheckList")) || []
-    );
-
-    if (showCheckListToggle) {
-      expandedCheckList.delete(task._id);
-    } else {
-      expandedCheckList.add(task._id);
-    }
-
-    localStorage.setItem(
-      "expandedCheckList",
-      JSON.stringify(Array.from(expandedCheckList))
-    );
-  };
-
   const handleShareButtonTask = () => {
-    setOptionsToggle(false)
+    setOptionsToggle(false);
     const mainUrl = new URL(window.location.href);
     const shareUrl = `${mainUrl.origin}/share/${task._id}`;
 
@@ -170,7 +163,7 @@ export default function TodoCard({ globalToggle, task }) {
   };
 
   const handleDeleteTask = async () => {
-    setOptionsToggle(false)
+    setOptionsToggle(false);
     const response = await deleteTaskWithId(task._id, accessToken);
 
     const { msg, success } = response;
@@ -181,19 +174,23 @@ export default function TodoCard({ globalToggle, task }) {
     displayToast(msg, success);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !globalToggle &&
+        !optionsToggle
+      ) {
+        setOptionsToggle(false);
+      }
+    };
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (menuRef.current && !menuRef.current.contains(event.target) && !globalToggle && !optionsToggle) {
-  //       setOptionsToggle(false);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [menuRef]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
 
   return (
     <div
@@ -254,8 +251,10 @@ export default function TodoCard({ globalToggle, task }) {
       </div>
 
       <p className="tooltip-title" data-tooltip={task?.title}>
-      {task?.title?.length >=9 ? task?.title?.slice(0,9) + "..."  : task?.title}
-    </p>
+        {task?.title?.length >= 9
+          ? task?.title?.slice(0, 9) + "..."
+          : task?.title}
+      </p>
 
       <div className="check-list-container">
         <div className="todo-list-checklist-count">
