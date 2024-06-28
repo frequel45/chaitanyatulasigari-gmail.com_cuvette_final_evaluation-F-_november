@@ -99,7 +99,7 @@ export default function Todo() {
   };
 
   const handleDateChange = (date) => {
-    console.log(date)
+    console.log(date);
     setStartDate(date);
     setShowDatePicker(false);
     setHasUserClickedOnDateBtn(true);
@@ -110,7 +110,7 @@ export default function Todo() {
 
   useEffect(() => {
     if (tempSingleTaskData) {
-      console.log(new Date(tempSingleTaskData.dueDate))
+      console.log(new Date(tempSingleTaskData.dueDate));
       setTitle(tempSingleTaskData.title);
       setChecklistItems(tempSingleTaskData.checklist);
       setSelectedPriority(tempSingleTaskData.priority);
@@ -357,7 +357,7 @@ export default function Todo() {
 
                 {loggedInUser?.chosenAssignees?.length > 0 &&
                   tempSingleTaskData?.assignedTo?.toLowerCase() !==
-                    loggedInUser?.email  && (
+                    loggedInUser?.email && (
                     <div className="assign-to-task">
                       <div className="assign-task-menu">
                         <p>Assign to</p>
@@ -383,7 +383,11 @@ export default function Todo() {
                               </div>
                               <button
                                 onClick={() => {
-                                  setAssignee(e?.email);
+                                  if (assignee === e?.email) {
+                                    setAssignee("");
+                                    setShowAssignPeople(false);
+                                  } else setAssignee(e?.email);
+                                  setShowAssignPeople(false);
                                 }}
                               >
                                 {assignee === e.email ? "Assigned" : "Assign"}
