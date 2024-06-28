@@ -125,6 +125,7 @@ export default function Todo() {
       setShowAssignPeople(false);
       setSelectedPriority(null);
       setHasUserClickedOnDateBtn(false);
+      setAssignee("");
       setTitle("");
       setErrors({ titleError: "", priorityError: "", checkListError: "" });
     }
@@ -315,7 +316,7 @@ export default function Todo() {
                         }`}
                         onClick={() => handlePriorityClick("high")}
                       >
-                        <p className="high-priority-point"></p> HIGH PRIORITY
+                        <p className="high-priority-point"></p> HIGH PRIORITY 
                       </div>
                       <div
                         className={`priority-selector-options-hover ${

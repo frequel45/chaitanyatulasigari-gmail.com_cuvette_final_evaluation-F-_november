@@ -213,7 +213,7 @@ export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
           {task?.priority === "high" && (
             <div className="alert-circle high"></div>
           )}
-          <p>{task?.priority} PRIORITY</p>
+          <p>{task?.priority} PRIORITY {task?.assignedTo && <span className="assigned-to-people">{task?.assignedTo?.slice(0,2)}</span> }</p>
         </div>
         <BiDotsHorizontalRounded
           onClick={() => setOptionsToggle(!optionsToggle)}
