@@ -47,7 +47,10 @@ const getFormattedTasks = async (accessToken) => {
     if ((success, statusCode === 200)) {
       return {
         success: true,
-        msg: "Tasks retrieved",
+        msg:
+          data.formattedTasks?.length > 0
+            ? "Tasks retrieved"
+            : "No tasks found",
         formattedTasks: data.formattedTasks,
       };
     } else {
@@ -267,7 +270,11 @@ const getFormattedTasksThisMonth = async (accessToken) => {
     if ((success, statusCode === 200)) {
       return {
         success: true,
-        msg: "Tasks retrieved",
+        // msg: "Tasks retrieved",
+        msg:
+          data.formattedTasks?.length > 0
+            ? "Tasks retrieved"
+            : "No tasks found",
         formattedTasks: data.formattedTasks,
       };
     } else {
@@ -306,7 +313,11 @@ const getFormattedTasksToday = async (accessToken) => {
     if (success && statusCode === 200) {
       return {
         success: true,
-        msg: "Tasks retrieved",
+        // msg: "Tasks retrieved",
+        msg:
+          data.formattedTasks?.length > 0
+            ? "Tasks retrieved"
+            : "No tasks found",
         formattedTasks: data.formattedTasks,
       };
     } else {

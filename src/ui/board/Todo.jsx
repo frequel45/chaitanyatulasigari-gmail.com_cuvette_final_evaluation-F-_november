@@ -99,6 +99,7 @@ export default function Todo() {
   };
 
   const handleDateChange = (date) => {
+    console.log(date)
     setStartDate(date);
     setShowDatePicker(false);
     setHasUserClickedOnDateBtn(true);
@@ -109,6 +110,7 @@ export default function Todo() {
 
   useEffect(() => {
     if (tempSingleTaskData) {
+      console.log(new Date(tempSingleTaskData.dueDate))
       setTitle(tempSingleTaskData.title);
       setChecklistItems(tempSingleTaskData.checklist);
       setSelectedPriority(tempSingleTaskData.priority);
@@ -129,7 +131,6 @@ export default function Todo() {
       setErrors({ titleError: "", priorityError: "", checkListError: "" });
     }
     setShowDatePicker(false);
-    setHasUserClickedOnDateBtn(false);
   }, [showTodo, showEditTaskBox, tempSingleTaskData]);
 
   const dispatch = useDispatch();
@@ -197,7 +198,6 @@ export default function Todo() {
     if (valid) {
       const formattedDueDate =
         startDate && hasUserClickedOnDateBtn ? startDate.toISOString() : "";
-      console.log(formattedDueDate);
       const taskData = {
         title,
         priority: selectedPriority,
@@ -205,7 +205,6 @@ export default function Todo() {
         dueDate: formattedDueDate,
         assignedTo: assignee,
       };
-      console.log(taskData);
       let response;
       if (tempSingleTaskData) {
         // Update existing task
