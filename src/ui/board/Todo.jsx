@@ -37,7 +37,6 @@ export default function Todo() {
     useContext(TempSingleTask);
   const { showEditTaskBox, setShowEditTaskBox } = useContext(EditTaskContext);
   const handleGlobalToggle = () => {
-    
     setGlobalToggle(!globalToggle);
   };
 
@@ -196,7 +195,7 @@ export default function Todo() {
     if (valid) {
       const formattedDueDate =
         startDate && hasUserClickedOnDateBtn ? startDate.toISOString() : "";
-
+      console.log(formattedDueDate);
       const taskData = {
         title,
         priority: selectedPriority,
@@ -204,7 +203,7 @@ export default function Todo() {
         dueDate: formattedDueDate,
         assignedTo: assignee,
       };
-
+      console.log(taskData);
       let response;
       if (tempSingleTaskData) {
         // Update existing task
@@ -244,9 +243,19 @@ export default function Todo() {
     setErrors((prevErrors) => ({ ...prevErrors, titleError: titleError }));
   };
 
-  const handleAddTodayButtonClick = ()=>{}
+  const handleAddTodayButtonClick = () => {
+    // if (tempSingleTaskData) {
+      setStartDate(new Date());
+      setShowDatePicker(false);
+      setHasUserClickedOnDateBtn(true);
+    // }
+  };
 
-  const handleClearTodayButtonClick = ()=>{}
+  const handleClearTodayButtonClick = () => {
+    setStartDate(null);
+    setShowDatePicker(false);
+    setHasUserClickedOnDateBtn(false);
+  };
 
   return (
     <>
@@ -258,12 +267,17 @@ export default function Todo() {
               setShowTodo(!showTodo);
             }}
           />
-          <VscCollapseAll onClick={handleGlobalToggle}  />
+          <VscCollapseAll onClick={handleGlobalToggle} />
         </p>
       </div>
       {tasks &&
         tasks?.todo.map((task, index) => (
-          <TodoCard key={index} globalToggle={globalToggle} task={task} setGlobalToggle={setGlobalToggle}/>
+          <TodoCard
+            key={index}
+            globalToggle={globalToggle}
+            task={task}
+            setGlobalToggle={setGlobalToggle}
+          />
         ))}
       {(showTodo || showEditTaskBox) && (
         <div
@@ -316,7 +330,7 @@ export default function Todo() {
                         }`}
                         onClick={() => handlePriorityClick("high")}
                       >
-                        <p className="high-priority-point"></p> HIGH PRIORITY 
+                        <p className="high-priority-point"></p> HIGH PRIORITY
                       </div>
                       <div
                         className={`priority-selector-options-hover ${
@@ -445,17 +459,18 @@ export default function Todo() {
                 </button>
                 {showDatePicker && (
                   <>
-                  <DatePicker
-                    selected={startDate}
-                    onChange={handleDateChange}
-                    className="date-picker"
-                    inline
-                  />
-                  <div className="calendar-buttons-today-clear">
-                  <button onClick={handleAddTodayButtonClick} >Today</button>
-                  <button onClick={handleClearTodayButtonClick}>Clear</button>
-                  </div>
-                  
+                    <DatePicker
+                      selected={startDate}
+                      onChange={handleDateChange}
+                      className="date-picker"
+                      inline
+                    />
+                    <div className="calendar-buttons-today-clear">
+                      <button onClick={handleAddTodayButtonClick}>Today</button>
+                      <button onClick={handleClearTodayButtonClick}>
+                        Clear
+                      </button>
+                    </div>
                   </>
                 )}
                 <div className="save-cancel-buttons">

@@ -27,8 +27,7 @@ export default function TodoCard({ globalToggle, task, setGlobalToggle }) {
   const [checkedCount, setCheckedCount] = useState(0);
   const [optionsToggle, setOptionsToggle] = useState(false);
   const menuRef = useRef(null);
-  const dueDateMissed = isDueDateMissed(task?.dueDate) && !task?.isCompleted;
-  // const doneInTime = task?.state === "done" && task?.isCompleted;
+  const dueDateMissed = isDueDateMissed(task?.dueDate)
   const { tempSingleTaskData, setTempSingleTaskData } =
     useContext(TempSingleTask);
   const { showEditTaskBox, setShowEditTaskBox } = useContext(EditTaskContext);
