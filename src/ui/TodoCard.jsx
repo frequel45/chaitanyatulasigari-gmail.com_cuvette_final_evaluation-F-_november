@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { formatDueDate } from "../utils/formatDate";
 import { taskPhase } from "../utils/tasksPhases";
 import {
@@ -20,7 +20,7 @@ import { isDueDateMissed } from "../utils/taskUtils";
 import { EditTaskContext } from "../context/EditProfileContext";
 import { TempSingleTask } from "../context/TempSingleTask";
 
-export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
+export default function TodoCard({ globalToggle, task, setGlobalToggle }) {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [showCheckListToggle, setShowCheckListToggle] = useState(false);
   const [checkedItems, setCheckedItems] = useState({});
@@ -69,10 +69,9 @@ export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
 
     if (showCheckListToggle) {
       expandedCheckList.delete(task._id);
-      
     } else {
       expandedCheckList.add(task._id);
-      setGlobalToggle(false)
+      setGlobalToggle(false);
     }
 
     localStorage.setItem(
@@ -213,7 +212,14 @@ export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
           {task?.priority === "high" && (
             <div className="alert-circle high"></div>
           )}
-          <p>{task?.priority} PRIORITY {task?.assignedTo && <span className="assigned-to-people">{task?.assignedTo?.slice(0,2)}</span> }</p>
+          <p>
+            {task?.priority} PRIORITY{" "}
+            {task?.assignedTo && (
+              <span className="assigned-to-people">
+                {task?.assignedTo?.slice(0, 2)}
+              </span>
+            )}
+          </p>
         </div>
         <BiDotsHorizontalRounded
           onClick={() => setOptionsToggle(!optionsToggle)}
@@ -266,7 +272,14 @@ export default function TodoCard({ globalToggle, task,setGlobalToggle }) {
           </p>
         </div>
         <button onClick={handleToggleChecklist} className="btn-collapse-expand">
-          <MdKeyboardArrowDown />
+          {showCheckListToggle ||
+          JSON.parse(localStorage.getItem("expandedCheckList"))?.includes(
+            task._id
+          ) ? (
+            <MdKeyboardArrowUp />
+          ) : (
+            <MdKeyboardArrowDown />
+          )}
         </button>
       </div>
       {(showCheckListToggle ||
