@@ -332,3 +332,8 @@
   border-radius: 100%;
   font-weight: 500;
 }
+
+.assigned-to-people.tooltip-title::after{
+  font-size: 100%;
+  text-transform: lowercase;
+}

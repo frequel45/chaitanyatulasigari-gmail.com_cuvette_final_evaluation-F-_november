@@ -31,6 +31,7 @@ export default function TodoCard({ globalToggle, task, setGlobalToggle }) {
   const { tempSingleTaskData, setTempSingleTaskData } =
     useContext(TempSingleTask);
   const { showEditTaskBox, setShowEditTaskBox } = useContext(EditTaskContext);
+  const loggedInUser = useSelector(state=>state.loggedInUser.loggedInUser)
   // console.log(task);
   useEffect(() => {
     setOptionsToggle(false);
@@ -213,8 +214,8 @@ export default function TodoCard({ globalToggle, task, setGlobalToggle }) {
           )}
           <p>
             {task?.priority} PRIORITY{" "}
-            {task?.assignedTo && (
-              <span className="assigned-to-people">
+            {task?.assignedTo && task?.assignedTo?.toLowerCase() !== loggedInUser?.email && (
+              <span data-tooltip={task?.assignedTo} className="assigned-to-people tooltip-title">
                 {task?.assignedTo?.slice(0, 2)}
               </span>
             )}

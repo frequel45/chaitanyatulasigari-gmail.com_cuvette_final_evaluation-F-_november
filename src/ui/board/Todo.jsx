@@ -247,9 +247,9 @@ export default function Todo() {
 
   const handleAddTodayButtonClick = () => {
     // if (tempSingleTaskData) {
-      setStartDate(new Date());
-      setShowDatePicker(false);
-      setHasUserClickedOnDateBtn(true);
+    setStartDate(new Date());
+    setShowDatePicker(false);
+    setHasUserClickedOnDateBtn(true);
     // }
   };
 
@@ -356,43 +356,45 @@ export default function Todo() {
                   {errors.priorityError && <span>{errors?.priorityError}</span>}
                 </div>
 
-                {loggedInUser?.chosenAssignees?.length > 0 && (
-                  <div className="assign-to-task">
-                    <div className="assign-task-menu">
-                      <p>Assign to</p>
-                      <div
-                        className="select-button"
-                        onClick={() => {
-                          setShowAssignPeople(!showAssignPeople);
-                        }}
-                      >
-                        <p>{assignee ? assignee : "Add an assignee"}</p>
-                        <p>
-                          <MdKeyboardArrowDown />
-                        </p>
+                {loggedInUser?.chosenAssignees?.length > 0 &&
+                  tempSingleTaskData?.assignedTo?.toLowerCase() !==
+                    loggedInUser?.email  && (
+                    <div className="assign-to-task">
+                      <div className="assign-task-menu">
+                        <p>Assign to</p>
+                        <div
+                          className="select-button"
+                          onClick={() => {
+                            setShowAssignPeople(!showAssignPeople);
+                          }}
+                        >
+                          <p>{assignee ? assignee : "Add an assignee"}</p>
+                          <p>
+                            <MdKeyboardArrowDown />
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    {showAssignPeople && (
-                      <div name="assign" className="assign-options">
-                        {loggedInUser.chosenAssignees.map((e) => (
-                          <div key={e._id} className="assign-option">
-                            <div className="user-details">
-                              <p>{e?.email?.slice(0, 2)}</p>
-                              <p>{e?.email}</p>
+                      {showAssignPeople && (
+                        <div name="assign" className="assign-options">
+                          {loggedInUser.chosenAssignees.map((e) => (
+                            <div key={e._id} className="assign-option">
+                              <div className="user-details">
+                                <p>{e?.email?.slice(0, 2)}</p>
+                                <p>{e?.email}</p>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  setAssignee(e?.email);
+                                }}
+                              >
+                                {assignee === e.email ? "Assigned" : "Assign"}
+                              </button>
                             </div>
-                            <button
-                              onClick={() => {
-                                setAssignee(e?.email);
-                              }}
-                            >
-                              {assignee === e.email ? "Assigned" : "Assign"}
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                 <div className="checklist-length">
                   <p>
