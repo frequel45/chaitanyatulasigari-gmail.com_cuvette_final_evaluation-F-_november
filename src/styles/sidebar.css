@@ -500,7 +500,8 @@
 }
 .react-datepicker {
   position: absolute !important;
-  margin-top: -300px;
+  margin-top: -305px;
+  margin-left: 155px;
 }
 .priority-selector-options-hover.selected {
   background-color: rgb(226, 226, 226);
@@ -511,25 +512,24 @@
   gap: 5px;
 }
 
-.calendar-buttons-today-clear{
+.calendar-buttons-today-clear {
   position: absolute;
   background-color: #ffffff;
   width: 240px !important;
-  margin-top: -30px;
+  margin-top: -35px;
+  margin-left: 155px;
   display: flex;
   padding: 2px;
   justify-content: space-between;
   align-items: center;
 }
-.calendar-buttons-today-clear button{
+.calendar-buttons-today-clear button {
   color: rgb(80, 79, 79) !important;
   border: 0px !important;
-/* background-color: var(--medium-gray) !important; */
-padding: 4px 10px !important;
-border-radius: 4px !important;
-margin-left: 4px;
-cursor: pointer;
-border: 1px solid rgb(194, 191, 191) !important;
+  /* background-color: var(--medium-gray) !important; */
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  margin-left: 4px;
+  cursor: pointer;
+  border: 1px solid rgb(194, 191, 191) !important;
 }
-
-
