@@ -94,7 +94,7 @@ export default function PublicPage() {
             strokeLinejoin="round"
           />
         </svg>
-        <p>Pro Manage</p>
+        <p>TaskTrek</p>
       </div>
       {loader ? (
         <div className="loader-container">
