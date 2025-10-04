@@ -78,7 +78,7 @@ export default function Sidebar() {
               strokeLinejoin="round"
             />
           </svg>
-          <p>Pro Manage</p>
+          <p>TaskTrek</p>
         </Link>
 
         <div className="side-nav-links">
