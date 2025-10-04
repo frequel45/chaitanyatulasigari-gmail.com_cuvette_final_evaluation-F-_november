@@ -25,8 +25,8 @@ export default function AuthLayout({ children }) {
           <div className="rounded-circle"></div>
         </div>
         <div className="side-text">
-          <p>Welcome aboard my friend</p>
-          <span>just a couple of clicks and we start</span>
+          <p>Welcome to <b>TaskTrek</b> my friend</p>
+          <span>Just a couple of steps and you can start</span>
         </div>
       </div>
       {/* Login / Register Form */}
